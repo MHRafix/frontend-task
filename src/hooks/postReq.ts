@@ -32,34 +32,34 @@ export const useReqSender = () => {
 
       // server success
       if (data?.success) {
-        alert(data.success);
-        Cookies.set("user_information", JSON.stringify(data), {
-          expires: 1, // 30 days
-          secure: true,
-          sameSite: "strict",
-          path: "/",
-        });
-
         setProcessing(false);
         resetForm({ values: "" });
-        setTimeout(() => {
-          Router.push("/allProducts");
-        }, 1000);
+
+        if (endPoint === "authentication/auth") {
+          Cookies.set("user_information", JSON.stringify(data), {
+            expires: 900000, // 15 min
+            secure: true,
+            sameSite: "strict",
+            path: "/",
+          });
+          setTimeout(() => {
+            Router.push("/allProducts");
+          }, 1000);
+        }
+
         alert(data.success);
         // server error
       } else if (data.error) {
-        alert(data.error);
-
         setProcessing(false);
         resetForm({ values: "" });
+        alert(data.error);
       }
 
       // try catch error
     } catch (err: any) {
-      alert(err.message);
-
       setProcessing(false);
       resetForm({ values: "" });
+      alert(err.message);
     }
   };
   return { sendReq };

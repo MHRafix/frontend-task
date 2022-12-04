@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import {
   LoginTextField,
   SubmitButton,
-} from "./components/common/Fields/AllFields";
+} from "../components/common/Fields/AllFields";
 
 import Cookies from "js-cookie";
 import type { NextPage } from "next";

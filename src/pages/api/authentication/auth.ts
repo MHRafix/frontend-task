@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
-import { generateToken } from "../middleware/generateToken";
+import { generateToken } from "../../../middleware/generateToken";
 
 type Data = {
   user_email: string;

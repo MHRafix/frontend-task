@@ -6,14 +6,14 @@ import type { NextPage } from "next";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
-import { useReqSender } from "../hooks/postReq";
-import useImageUploader from "../hooks/uploadImg";
 import {
   SubmitButton,
   TextAreaField,
   TextField,
-} from "./components/common/Fields/AllFields";
-import LayoutContainer from "./components/common/Layout/LayoutContainer";
+} from "../components/common/Fields/AllFields";
+import LayoutContainer from "../components/common/Layout/LayoutContainer";
+import { useReqSender } from "../hooks/postReq";
+import useImageUploader from "../hooks/uploadImg";
 
 // product interface
 interface IProduct {
