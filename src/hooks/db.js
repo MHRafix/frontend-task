@@ -21,7 +21,7 @@ async function connect() {
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
+      // useCreateIndex: true,
     }
   );
   console.log("New connection");

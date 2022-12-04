@@ -6,12 +6,25 @@ import type { NextPage } from "next";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { useReqSender } from "../hooks/postReq";
+import useImageUploader from "../hooks/uploadImg";
 import {
   SubmitButton,
   TextAreaField,
   TextField,
 } from "./components/common/Fields/AllFields";
 import LayoutContainer from "./components/common/Layout/LayoutContainer";
+
+// product interface
+interface IProduct {
+  title: string;
+  slug: string;
+  thumbnail?: string;
+  regular_price: number;
+  sale_price: number;
+  short_desc: string;
+  desc: string;
+}
 
 const AddProducts: NextPage = () => {
   // take user info
@@ -48,15 +61,31 @@ const AddProducts: NextPage = () => {
     desc: Yup.string().max(250),
   });
 
+  // send req
+  const { imgUpload } = useImageUploader();
+  const { sendReq } = useReqSender();
+
   // on submit function here
   const onSubmit = async (
-    values: any,
+    values: IProduct,
     { resetForm }: { resetForm: () => void }
   ) => {
     setProcessing((state: boolean) => !state);
-    console.log(values);
-    console.log(thumbnail);
+    if (thumbnail && values) {
+      const imageUrl: string | undefined = await imgUpload(thumbnail);
+
+      // push to values
+      values.thumbnail = imageUrl;
+
+      sendReq({
+        reqData: values,
+        resetForm,
+        setProcessing,
+        endPoint: "product/addProduct",
+      });
+    }
   };
+
   return (
     <LayoutContainer title="Add products">
       <Box

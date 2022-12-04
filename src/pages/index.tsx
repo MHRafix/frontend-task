@@ -12,7 +12,7 @@ import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Router from "next/router";
-import { useAuthReqSender } from "../hooks/postReq";
+import { useReqSender } from "../hooks/postReq";
 
 const Home: NextPage = () => {
   // take user info
@@ -41,7 +41,8 @@ const Home: NextPage = () => {
     user_password: Yup.string().required("Required!"),
   });
 
-  const { sendReq } = useAuthReqSender();
+  // send req
+  const { sendReq } = useReqSender();
 
   // on submit function here
   const onSubmit = async (values: any, { resetForm }: { resetForm: any }) => {
