@@ -1,15 +1,10 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
-import { AiFillEdit } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 
 const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
+  console.log(products);
   return (
     <>
-      {products?.map((product: IProduct, idx: number) => (
+      {/* {products?.map((product: IProduct, idx: number) => (
         <Box
           key={idx}
           sx={{
@@ -92,7 +87,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
             </Link>
           </Box>
         </Box>
-      ))}
+      ))} */}
     </>
   );
 };

@@ -26,7 +26,6 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
     }
   }, [user?.user_email]);
 
-  console.log(allProducts);
   return (
     <LayoutContainer title="All products">
       <Box>
