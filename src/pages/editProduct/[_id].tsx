@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { Form, Formik } from "formik";
 import type { NextPage } from "next";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import * as Yup from "yup";
 import {
@@ -21,6 +22,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
 }) => {
   const [processing, setProcessing] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>("");
+  const router = useRouter();
 
   // initial vlaue of form
   const initialValues = {
@@ -44,7 +46,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
 
   // send req
   const { imgUpload } = useImageUploader();
-  const { sendReq } = useReqSender();
+  const { putReq } = useReqSender();
 
   // on submit function here
   const onSubmit = async (
@@ -57,14 +59,13 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
 
       // push to values
       values.thumbnail = imageUrl;
-      console.log(values);
 
-      // sendReq({
-      // 	reqData: values,
-      // 	resetForm,
-      // 	setProcessing,
-      // 	endPoint: 'product/addProduct',
-      // });
+      putReq({
+        reqData: values,
+        resetForm,
+        setProcessing,
+        endPoint: `update/${router.query}`,
+      });
     }
   };
   return (

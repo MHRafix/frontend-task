@@ -15,7 +15,7 @@ class Request {
     return instance.post(url, body).then((res) => res.data);
   }
   async update(url: string, body: any): Promise<AxiosResponse> {
-    return instance.patch(url, body).then((res) => res.data);
+    return instance.put(url, body).then((res) => res.data);
   }
   async delete(url: string): Promise<AxiosResponse> {
     return instance.delete(url).then((res) => res.data);

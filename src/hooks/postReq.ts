@@ -3,6 +3,7 @@ import Router from "next/router";
 import httpReq from "./axiosInstance";
 
 export const useReqSender = () => {
+  // post req sender
   const sendReq = async (reqConfig: {
     reqData: { user_email: string; user_password: string } | IProduct;
     resetForm: any;
@@ -45,5 +46,38 @@ export const useReqSender = () => {
       alert(err.message);
     }
   };
-  return { sendReq };
+
+  // update req sender
+  const putReq = async (reqConfig: {
+    reqData: { user_email: string; user_password: string } | IProduct;
+    resetForm: any;
+    setProcessing: (value: boolean) => void;
+    endPoint: string;
+  }) => {
+    const { reqData, resetForm, setProcessing, endPoint } = reqConfig;
+    try {
+      const data: any = await httpReq.update(`/api/${endPoint}`, reqData);
+
+      // server success
+      if (data?.success) {
+        setProcessing(false);
+        resetForm({ values: "" });
+        Router.push("/allProducts");
+
+        // server error
+      } else if (data.error) {
+        setProcessing(false);
+        resetForm({ values: "" });
+        alert(data.error);
+      }
+
+      // try catch error
+    } catch (err: any) {
+      setProcessing(false);
+      resetForm({ values: "" });
+      alert(err.message);
+    }
+  };
+
+  return { sendReq, putReq };
 };
