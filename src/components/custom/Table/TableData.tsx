@@ -34,7 +34,7 @@ const TableData: React.FC<{
               textAlign: "center",
             }}
           >
-            {product?._id?.split(0, 5)}
+            {product?._id?.split("1", 5)}
           </Box>
           <Box
             sx={{
