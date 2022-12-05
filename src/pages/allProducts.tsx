@@ -85,7 +85,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
           </Box>
         </Box>
 
-        <TableData products={allProducts} />
+        {allProducts?.length && <TableData products={allProducts} />}
       </Box>
     </LayoutContainer>
   );
