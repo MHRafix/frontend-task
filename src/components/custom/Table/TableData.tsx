@@ -29,7 +29,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
               textAlign: "center",
             }}
           >
-            {/* {product._id?.slice(0, 5)} */}
+            {product?._id?.slice(0, 5)}
           </Box>
           <Box
             sx={{
