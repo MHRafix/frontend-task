@@ -1,10 +1,16 @@
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Cookies from "js-cookie";
 import type { NextPage } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import Router from "next/router";
 import { useEffect, useState } from "react";
+import { AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import db from "../hooks/db";
+import { handleDelete } from "../hooks/deleteReq";
 import Product from "../model/Product";
 
 const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
@@ -28,7 +34,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
   return (
     <LayoutContainer title="All products">
       <Box>
-        {/* <Box
+        <Box
           sx={{
             width: "700px",
             margin: "auto",
@@ -82,9 +88,9 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
             Actions
           </Box>
         </Box>
-        {products?.length ? (
+        {allProducts?.length ? (
           <Box>
-            {products?.map((product: IProduct, idx: number) => (
+            {allProducts?.map((product: IProduct, idx: number) => (
               <Box
                 key={idx}
                 sx={{
@@ -183,7 +189,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
           >
             No products found!
           </Box>
-        )} */}
+        )}
       </Box>
     </LayoutContainer>
   );
