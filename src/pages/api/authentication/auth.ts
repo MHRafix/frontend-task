@@ -3,17 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
 import { generateToken } from "../../../middleware/generateToken";
 
-type Data = {
-  user_email: string;
-  success: string;
-  token: string;
-};
-
-type IUser = {
-  user_email: string;
-  user_password: string;
-};
-
 const handler = nc();
 
 handler.post(

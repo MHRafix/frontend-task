@@ -1,43 +1,35 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Form, Formik } from "formik";
-import Cookies from "js-cookie";
 import type { NextPage } from "next";
-import Router from "next/router";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useState } from "react";
 import * as Yup from "yup";
 import {
   SubmitButton,
   TextAreaField,
   TextField,
-} from "../components/common/Fields/AllFields";
-import LayoutContainer from "../components/common/Layout/LayoutContainer";
-import { useReqSender } from "../hooks/postReq";
-import useImageUploader from "../hooks/uploadImg";
+} from "../../components/common/Fields/AllFields";
+import LayoutContainer from "../../components/common/Layout/LayoutContainer";
+import httpReq from "../../hooks/axiosInstance";
+import db from "../../hooks/db";
+import { useReqSender } from "../../hooks/postReq";
+import useImageUploader from "../../hooks/uploadImg";
 
-const AddProducts: NextPage = () => {
-  // take user info
-  const userCookie: string | undefined = Cookies.get("user_information");
-  const user = userCookie && JSON.parse(userCookie);
-
-  useEffect(() => {
-    if (!user?.user_email) {
-      // redirect to chat
-      Router.push("/");
-    }
-  }, [user?.user_email]);
-
+const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
+  singleProduct,
+}) => {
   const [processing, setProcessing] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>("");
 
   // initial vlaue of form
   const initialValues = {
-    title: "",
-    slug: "",
-    regular_price: 10,
-    sale_price: 5,
-    short_desc: "",
-    desc: "",
+    title: singleProduct.title,
+    slug: singleProduct.slug,
+    regular_price: singleProduct.regular_price,
+    sale_price: singleProduct.sale_price,
+    short_desc: singleProduct.short_desc,
+    desc: singleProduct.desc,
   };
 
   // validation schema using formik yup
@@ -74,18 +66,9 @@ const AddProducts: NextPage = () => {
       });
     }
   };
-
   return (
-    <LayoutContainer title="Add products">
-      <Box
-        sx={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    <LayoutContainer title="Edit product">
+      <Box>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -106,7 +89,7 @@ const AddProducts: NextPage = () => {
                 fontFamily: "Poppins",
               }}
             >
-              Create New Product
+              Edit Product
             </Typography>
             <Box
               sx={{
@@ -153,6 +136,17 @@ const AddProducts: NextPage = () => {
               onChange={(e: any) => setThumbnail(e.target.files[0])}
               required
             />
+            {singleProduct.thumbnail && (
+              <Image
+                src={singleProduct.thumbnail}
+                alt="thumbnail"
+                width={40}
+                height={40}
+                style={{
+                  borderRadius: "100px",
+                }}
+              />
+            )}
             <TextAreaField
               type="text"
               name="short_desc"
@@ -160,7 +154,7 @@ const AddProducts: NextPage = () => {
             />
             <TextAreaField type="text" name="desc" label="Description" />
 
-            <SubmitButton processing={processing}>Create Product</SubmitButton>
+            <SubmitButton processing={processing}>Update Product</SubmitButton>
           </Form>
         </Formik>
       </Box>
@@ -168,4 +162,23 @@ const AddProducts: NextPage = () => {
   );
 };
 
-export default AddProducts;
+export default EditProduct;
+
+export async function getServerSideProps({
+  params,
+}: {
+  params: { _id: string };
+}) {
+  db.connect();
+  // all products
+  // const allProducts: IProduct | null = await Product.findOne({});
+  const allProducts: IProduct[] | any = await httpReq.get(
+    "http:localhost:3000/api/product/allProducts"
+  );
+  const singleProduct: IProduct = allProducts.find(
+    (product: IProduct) => product._id === params._id
+  );
+  db.disconnect();
+
+  return { props: { singleProduct } };
+}

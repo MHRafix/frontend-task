@@ -26,7 +26,15 @@ export const TextField: React.FC<{
         }}
         placeholder={label}
       />
-      <div style={{ color: "red", textAlign: "left", fontFamily: "Poppins" }}>
+
+      <div
+        style={{
+          color: "red",
+          textAlign: "left",
+          fontFamily: "Poppins",
+          fontSize: "24px",
+        }}
+      >
         <ErrorMessage name={name} />
       </div>
     </>
