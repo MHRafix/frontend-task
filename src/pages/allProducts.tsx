@@ -1,11 +1,17 @@
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Cookies from "js-cookie";
 import type { NextPage } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import Router from "next/router";
 import { useEffect, useState } from "react";
+import { AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import db from "../hooks/db";
-import { fetcher } from "../hooks/fetcher";
+import { handleDelete } from "../hooks/deleteReq";
+import Product from "../model/Product";
 
 const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
   allProducts,
@@ -28,7 +34,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
   return (
     <LayoutContainer title="All products">
       <Box>
-        {/* <Box
+        <Box
           sx={{
             width: "700px",
             margin: "auto",
@@ -183,7 +189,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
           >
             No products found!
           </Box>
-        )}*/}
+        )}
       </Box>
     </LayoutContainer>
   );
@@ -192,12 +198,12 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
 export default AllProducts;
 
 export async function getServerSideProps() {
-  db.connect();
+  await db.connect();
   // // all products
-  // const allProducts: IProduct[] | any[] = await Product.find({});
-  const allProducts: IProduct[] = await fetcher("product/allProducts");
+  const allProducts: IProduct[] | any[] = await Product.find({});
+  // const allProducts: IProduct[] = await fetcher('product/allProducts');
 
-  db.disconnect();
+  await db.disconnect();
 
   return { props: { allProducts } };
 }
