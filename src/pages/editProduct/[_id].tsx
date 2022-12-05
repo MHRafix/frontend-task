@@ -23,7 +23,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
   const [processing, setProcessing] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>("");
   const router = useRouter();
-  console.log(router.query._id);
+
   // initial vlaue of form
   const initialValues = {
     title: singleProduct.title,
@@ -64,7 +64,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
         reqData: values,
         resetForm,
         setProcessing,
-        endPoint: `product/update/${router.query}`,
+        endPoint: `product/update/${router.query._id}`,
       });
     }
   };
