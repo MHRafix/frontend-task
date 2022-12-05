@@ -1,10 +1,14 @@
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Link from "next/link";
 import React from "react";
+import { AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 
 const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
-  console.log(products);
   return (
     <>
-      {/* {products?.map((product: IProduct, idx: number) => (
+      {products?.map((product: IProduct, idx: number) => (
         <Box
           key={idx}
           sx={{
@@ -33,7 +37,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
               textAlign: "center",
             }}
           >
-            {product.title}
+            {/* {product.title} */}
           </Box>
           <Box
             sx={{
@@ -41,7 +45,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
               textAlign: "center",
             }}
           >
-            ${product.regular_price}
+            {/* ${product.regular_price} */}
           </Box>
           <Box
             sx={{
@@ -52,7 +56,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
               textAlign: "center",
             }}
           >
-            {product.thumbnail && (
+            {/* {product.thumbnail && (
               <Image
                 src={product?.thumbnail}
                 alt="thumbnail"
@@ -62,7 +66,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
                   borderRadius: "100px",
                 }}
               />
-            )}
+            )} */}
           </Box>
           <Box>
             <Button
@@ -80,14 +84,14 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
               <MdDelete size={20} />
             </Button>
             &nbsp;
-            <Link href={`/editProduct/${product._id}`} passHref>
+            <Link href={`/editProduct/${product?._id}`} passHref>
               <Button variant="contained" color="secondary">
                 <AiFillEdit size={20} />
               </Button>
             </Link>
           </Box>
         </Box>
-      ))} */}
+      ))}
     </>
   );
 };
