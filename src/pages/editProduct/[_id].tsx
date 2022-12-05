@@ -13,9 +13,10 @@ import {
   TextField,
 } from "../../components/common/Fields/AllFields";
 import LayoutContainer from "../../components/common/Layout/LayoutContainer";
-import { fetcher } from "../../hooks/fetcher";
+import db from "../../hooks/db";
 import { useReqSender } from "../../hooks/postReq";
 import useImageUploader from "../../hooks/uploadImg";
+import Product from "../../model/Product";
 
 const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
   singleProduct,
@@ -190,14 +191,12 @@ export async function getServerSideProps({
 }: {
   params: { _id: string };
 }) {
+  await db.connect();
   // all products
-  // const singleProduct: IProduct | null = await Product.findOne({
-  // 	_id: params._id,
-  // });
-
-  const singleProduct: IProduct = await fetcher(
-    `product/singleProduct/${params._id}`
-  );
+  const singleProduct: IProduct | null = await Product.findOne({
+    _id: params._id,
+  });
+  await db.disconnect();
 
   return { props: { singleProduct } };
 }
