@@ -5,8 +5,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import TableData from "../components/custom/Table/TableData";
-import db from "../hooks/db";
-import Product from "../model/Product";
+import { fetcher } from "../hooks/fetcher";
 
 const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
   allProducts,
@@ -95,12 +94,13 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
 export default AllProducts;
 
 export async function getServerSideProps() {
-  await db.connect();
-  // // all products
-  const allProducts: IProduct[] | any[] = await Product.find({});
-  // const allProducts: IProduct[] = await fetcher('product/allProducts');
+  // await db.connect();
+  // // // all products
+  // const allProducts: IProduct[] | any[] = await Product.find({});
+  // // const allProducts: IProduct[] = await fetcher('product/allProducts');
 
-  await db.disconnect();
+  // await db.disconnect();
 
+  const allProducts: IProduct[] = await fetcher("product/allProducts");
   return { props: { allProducts } };
 }
