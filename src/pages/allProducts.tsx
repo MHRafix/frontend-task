@@ -11,7 +11,7 @@ import { MdDelete } from "react-icons/md";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import db from "../hooks/db";
 import { handleDelete } from "../hooks/deleteReq";
-import Product from "../model/Product";
+import { fetcher } from "../hooks/fetcher";
 
 const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
   allProducts,
@@ -90,9 +90,9 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
         </Box>
         {products?.length ? (
           <Box>
-            {products?.map((product: IProduct) => (
+            {products?.map((product: IProduct, idx: number) => (
               <Box
-                key={product.title}
+                key={idx}
                 sx={{
                   width: "700px",
                   margin: "15px auto",
@@ -199,8 +199,9 @@ export default AllProducts;
 
 export async function getServerSideProps() {
   db.connect();
-  // all products
-  const allProducts: IProduct[] | any[] = await Product.find({});
+  // // all products
+  // const allProducts: IProduct[] | any[] = await Product.find({});
+  const allProducts: IProduct[] = await fetcher("product/allProducts");
 
   db.disconnect();
 

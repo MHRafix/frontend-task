@@ -1,10 +1,11 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Form, Formik } from "formik";
+import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import Router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import {
   SubmitButton,
@@ -12,14 +13,25 @@ import {
   TextField,
 } from "../../components/common/Fields/AllFields";
 import LayoutContainer from "../../components/common/Layout/LayoutContainer";
-import db from "../../hooks/db";
+import { fetcher } from "../../hooks/fetcher";
 import { useReqSender } from "../../hooks/postReq";
 import useImageUploader from "../../hooks/uploadImg";
-import Product from "../../model/Product";
 
 const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
   singleProduct,
 }) => {
+  // take user info
+  const userCookie: string | undefined = Cookies.get("user_information");
+  const user = userCookie && JSON.parse(userCookie);
+
+  // prevent fake user
+  useEffect(() => {
+    if (!user?.user_email) {
+      // redirect to chat
+      Router.push("/");
+    }
+  }, [user?.user_email]);
+
   const [processing, setProcessing] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>("");
   const router = useRouter();
@@ -68,6 +80,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
       });
     }
   };
+
   return (
     <LayoutContainer title="Edit product">
       <Box
@@ -177,14 +190,14 @@ export async function getServerSideProps({
 }: {
   params: { _id: string };
 }) {
-  db.connect();
-
   // all products
-  const singleProduct: IProduct | null = await Product.findOne({
-    _id: params._id,
-  });
+  // const singleProduct: IProduct | null = await Product.findOne({
+  // 	_id: params._id,
+  // });
 
-  db.disconnect();
+  const singleProduct: IProduct = await fetcher(
+    `product/singleProduct/${params._id}`
+  );
 
   return { props: { singleProduct } };
 }

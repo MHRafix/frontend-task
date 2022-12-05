@@ -55,7 +55,6 @@ export const useReqSender = () => {
     endPoint: string;
   }) => {
     const { reqData, resetForm, setProcessing, endPoint } = reqConfig;
-    console.log(reqData, endPoint);
     try {
       const data: any = await httpReq.update(`/api/${endPoint}`, reqData);
 
