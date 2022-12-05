@@ -9,7 +9,7 @@ export const generateToken = (user) => {
 
     process.env.NEXT_PUBLIC_ANALYTICS_JWT_SECRET,
     {
-      expiresIn: "1d", // 30d for 30 days
+      expiresIn: "900s", // 900s for 15 min
     }
   );
   return token;

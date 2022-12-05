@@ -2,7 +2,7 @@ import httpReq from "./axiosInstance";
 
 export const handleDelete = async (
   products: IProduct[],
-  setProducts: (state: IProduct[]) => void,
+  setProducts: (state: any) => void,
   id: string | undefined,
   end_point: string
 ): Promise<void> => {

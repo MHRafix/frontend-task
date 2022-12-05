@@ -9,15 +9,15 @@ import { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
-import httpReq from "../hooks/axiosInstance";
 import db from "../hooks/db";
 import { handleDelete } from "../hooks/deleteReq";
+import Product from "../model/Product";
 
 const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
   allProducts,
 }) => {
+  // all products state
   const [products, setProducts] = useState<IProduct[]>(allProducts);
-  const [modal, setModal] = useState<boolean>(false);
 
   // take user info
   const userCookie: string | undefined = Cookies.get("user_information");
@@ -30,7 +30,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
       Router.push("/");
     }
   }, [user?.user_email]);
-  console.log(modal);
+
   return (
     <LayoutContainer title="All products">
       <Box>
@@ -88,9 +88,9 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
             Actions
           </Box>
         </Box>
-        {products.length ? (
+        {products?.length ? (
           <Box>
-            {products.map((product: IProduct) => (
+            {products?.map((product: IProduct) => (
               <Box
                 key={product.title}
                 sx={{
@@ -200,10 +200,8 @@ export default AllProducts;
 export async function getServerSideProps() {
   db.connect();
   // all products
-  // const allProducts: IProduct | null = await Product.findOne({});
-  const allProducts = await httpReq.get(
-    "http:localhost:3000/api/product/allProducts"
-  );
+  const allProducts: IProduct[] | any[] = await Product.find({});
+
   db.disconnect();
 
   return { props: { allProducts } };

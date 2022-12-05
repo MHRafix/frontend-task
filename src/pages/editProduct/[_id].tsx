@@ -11,10 +11,10 @@ import {
   TextField,
 } from "../../components/common/Fields/AllFields";
 import LayoutContainer from "../../components/common/Layout/LayoutContainer";
-import httpReq from "../../hooks/axiosInstance";
 import db from "../../hooks/db";
 import { useReqSender } from "../../hooks/postReq";
 import useImageUploader from "../../hooks/uploadImg";
+import Product from "../../model/Product";
 
 const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
   singleProduct,
@@ -57,18 +57,25 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
 
       // push to values
       values.thumbnail = imageUrl;
+      console.log(values);
 
-      sendReq({
-        reqData: values,
-        resetForm,
-        setProcessing,
-        endPoint: "product/addProduct",
-      });
+      // sendReq({
+      // 	reqData: values,
+      // 	resetForm,
+      // 	setProcessing,
+      // 	endPoint: 'product/addProduct',
+      // });
     }
   };
   return (
     <LayoutContainer title="Edit product">
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -170,14 +177,12 @@ export async function getServerSideProps({
   params: { _id: string };
 }) {
   db.connect();
+
   // all products
-  // const allProducts: IProduct | null = await Product.findOne({});
-  const allProducts: IProduct[] | any = await httpReq.get(
-    "http:localhost:3000/api/product/allProducts"
-  );
-  const singleProduct: IProduct = allProducts.find(
-    (product: IProduct) => product._id === params._id
-  );
+  const singleProduct: IProduct | null = await Product.findOne({
+    _id: params._id,
+  });
+
   db.disconnect();
 
   return { props: { singleProduct } };
