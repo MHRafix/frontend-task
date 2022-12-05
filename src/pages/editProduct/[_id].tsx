@@ -64,7 +64,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
         reqData: values,
         resetForm,
         setProcessing,
-        endPoint: `update/${router.query}`,
+        endPoint: `product/update/${router.query}`,
       });
     }
   };
