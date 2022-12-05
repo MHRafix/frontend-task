@@ -6,19 +6,16 @@ import Product from "../../../../model/Product";
 
 const handler = nc();
 
-handler.put(
+handler.patch(
   async (
     req: NextApiRequest,
     res: NextApiResponse<{ success: string } | { error: string }>
   ) => {
     const { _id } = req.query;
     await db.connect();
-    let product = await Product.findOne({ _id });
-    if (product) {
-      product = req.body;
-      await product.save();
-      await db.disconnect();
-      res.status(200).json({ success: "Product update successfully!" });
+    const updated = await Product.findByIdAndUpdate({ _id }, req.body);
+    if (updated) {
+      res.status(200).json({ success: "Product updated successfully!" });
     } else {
       res.json({ error: "Opps, something went wrong!" });
     }

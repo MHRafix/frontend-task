@@ -46,7 +46,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
 
   // send req
   const { imgUpload } = useImageUploader();
-  const { putReq } = useReqSender();
+  const { patchReq } = useReqSender();
 
   // on submit function here
   const onSubmit = async (
@@ -60,7 +60,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
       // push to values
       values.thumbnail = imageUrl;
 
-      putReq({
+      patchReq({
         reqData: values,
         resetForm,
         setProcessing,

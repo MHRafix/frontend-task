@@ -48,7 +48,7 @@ export const useReqSender = () => {
   };
 
   // update req sender
-  const putReq = async (reqConfig: {
+  const patchReq = async (reqConfig: {
     reqData: { user_email: string; user_password: string } | IProduct;
     resetForm: any;
     setProcessing: (value: boolean) => void;
@@ -79,5 +79,5 @@ export const useReqSender = () => {
     }
   };
 
-  return { sendReq, putReq };
+  return { sendReq, patchReq };
 };
