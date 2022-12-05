@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import Router from "next/router";
 import { useEffect } from "react";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
+import TableData from "../components/custom/Table/TableData";
 import db from "../hooks/db";
 import Product from "../model/Product";
 
@@ -83,9 +84,8 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
             Actions
           </Box>
         </Box>
-        {/* {allProducts?.map((product: IProduct, idx: number) => (
-          <TableData key={idx} product={product} />
-        ))} */}
+
+        <TableData products={allProducts} />
       </Box>
     </LayoutContainer>
   );
