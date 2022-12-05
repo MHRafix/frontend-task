@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const axiosConfig: AxiosRequestConfig = {
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_ANALYTICS_BASE_API_URL,
   timeout: 50000,
 };
 
