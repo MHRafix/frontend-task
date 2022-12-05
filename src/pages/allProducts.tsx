@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Router from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import TableData from "../components/custom/Table/TableData";
 import db from "../hooks/db";
@@ -12,7 +12,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
   allProducts,
 }) => {
   // all products state
-  // const [products, setProducts] = useState<IProduct[]>(allProducts);
+  const [products, setProducts] = useState<IProduct[]>(allProducts);
 
   // take user info
   const userCookie: string | undefined = Cookies.get("user_information");
@@ -84,7 +84,9 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
           </Box>
         </Box>
 
-        {allProducts?.length && <TableData products={allProducts} />}
+        {allProducts?.length && (
+          <TableData products={products} setProducts={setProducts} />
+        )}
       </Box>
     </LayoutContainer>
   );

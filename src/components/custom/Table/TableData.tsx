@@ -5,8 +5,12 @@ import Link from "next/link";
 import React from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
+import { handleDelete } from "../../../hooks/deleteReq";
 
-const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
+const TableData: React.FC<{
+  products: IProduct[];
+  setProducts: (state: IProduct[]) => void;
+}> = ({ products, setProducts }) => {
   return (
     <>
       {products?.map((product: IProduct, idx: number) => (
@@ -30,7 +34,7 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
               textAlign: "center",
             }}
           >
-            {idx}
+            {product?._id?.split(0, 5)}
           </Box>
           <Box
             sx={{
@@ -73,14 +77,14 @@ const TableData: React.FC<{ products: IProduct[] }> = ({ products }) => {
             <Button
               variant="contained"
               color="error"
-              //   onClick={() =>
-              // handleDelete(
-              // 	products,
-              // 	setProducts,
-              // 	idx,
-              // 	`product/delete/${idx}`
-              // )
-              //   }
+              onClick={() =>
+                handleDelete(
+                  products,
+                  setProducts,
+                  product?._id,
+                  `product/delete/${product?._id}`
+                )
+              }
             >
               <MdDelete size={20} />
             </Button>
