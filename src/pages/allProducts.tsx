@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import TableData from "../components/custom/Table/TableData";
 import { fetcher } from "../hooks/fetcher";
+import Product from "../model/Product";
+import db from "../hooks/db.js";
 
-const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
-  allProducts,
-}) => {
+const AllProducts: NextPage<{
+  allProducts: IProduct[] | any[];
+}> = ({ allProducts }) => {
   // all products state
   const [products, setProducts] = useState<IProduct[]>(allProducts);
 
@@ -86,6 +88,7 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
         {allProducts?.length && (
           <TableData products={products} setProducts={setProducts} />
         )}
+        {allProducts?.length > 5 && <Box>Pagination</Box>}
       </Box>
     </LayoutContainer>
   );
@@ -93,14 +96,17 @@ const AllProducts: NextPage<{ allProducts: IProduct[] | any[] }> = ({
 
 export default AllProducts;
 
-export async function getServerSideProps() {
-  // await db.connect();
-  // // // all products
-  // const allProducts: IProduct[] | any[] = await Product.find({});
+export async function getServerSideProps({
+  params,
+}: {
+  params: { page: number };
+}) {
+  await db.connect();
+  // all products
+  const allProducts: IProduct[] | any[] = await Product.find({});
   // // const allProducts: IProduct[] = await fetcher('product/allProducts');
 
-  // await db.disconnect();
+  await db.disconnect();
 
-  const allProducts: IProduct[] = await fetcher("product/allProducts");
   return { props: { allProducts } };
 }
