@@ -5,19 +5,18 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import db from "../hooks/db";
-import { handleDelete } from "../hooks/deleteReq";
 import Product from "../model/Product";
 
 const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
   allProducts,
 }) => {
   // all products state
-  const [products, setProducts] = useState<IProduct[]>(allProducts);
+  // const [products, setProducts] = useState<IProduct[]>(allProducts);
 
   // take user info
   const userCookie: string | undefined = Cookies.get("user_information");
@@ -154,14 +153,14 @@ const AllProducts: NextPage<{ allProducts: IProduct[] }> = ({
                   <Button
                     variant="contained"
                     color="error"
-                    onClick={() =>
-                      handleDelete(
-                        products,
-                        setProducts,
-                        product._id,
-                        `product/delete/${product._id}`
-                      )
-                    }
+                    // onClick={() =>
+                    // 	handleDelete(
+                    // 		products,
+                    // 		setProducts,
+                    // 		product._id,
+                    // 		`product/delete/${product._id}`
+                    // 	)
+                    // }
                   >
                     <MdDelete size={20} />
                   </Button>
