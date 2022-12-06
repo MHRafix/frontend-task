@@ -129,9 +129,9 @@ export async function getServerSideProps({
   params: { page: number };
 }) {
   await db.connect();
+
   // all products
   const allProducts: IProduct[] | any[] = await Product.find({});
-  // const allProducts: IProduct[] = await fetcher('product/allProducts');
 
   await db.disconnect();
 

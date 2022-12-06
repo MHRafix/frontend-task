@@ -192,10 +192,12 @@ export async function getServerSideProps({
   params: { _id: string };
 }) {
   await db.connect();
+
   // all products
   const singleProduct: IProduct | null = await Product.findOne({
     _id: params._id,
   });
+
   await db.disconnect();
 
   return { props: { singleProduct } };
