@@ -34,7 +34,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
   }, [user?.user_email]);
 
   const [processing, setProcessing] = useState<boolean>(false);
-  const [thumbnail, setThumbnail] = useState<any>(singleProduct?.thumbnail);
+  const [thumbnail, setThumbnail] = useState<any>("");
   const router = useRouter();
 
   // initial vlaue of form
@@ -168,7 +168,11 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
             />
             {singleProduct?.thumbnail && (
               <Image
-                src={thumbnail}
+                src={
+                  thumbnail
+                    ? URL.createObjectURL(thumbnail)
+                    : singleProduct?.thumbnail
+                }
                 alt="thumbnail"
                 width={40}
                 height={40}
