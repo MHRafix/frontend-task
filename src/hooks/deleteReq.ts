@@ -19,7 +19,8 @@ export const handleDelete = async (
           Authorization: `Bearer ${user.accessToken}`,
         },
       });
-      if (data.success) {
+      console.log(data);
+      if (data?.success) {
         const rest = products.filter((p: IProduct) => id !== p._id);
         setProducts(rest);
       } else {
