@@ -4,7 +4,7 @@ import Router from "next/router";
 import httpReq from "./axiosInstance";
 
 export const useReqSender = () => {
-  // post req sender
+  // auth req sender
   const authReq = async (reqConfig: {
     reqData: { user_email: string; user_password: string } | IProduct;
     resetForm: any;
@@ -13,10 +13,7 @@ export const useReqSender = () => {
   }) => {
     const { reqData, resetForm, setProcessing, endPoint } = reqConfig;
     try {
-      const { data }: { data: { success: string } } = await httpReq.post(
-        `/api/${endPoint}`,
-        reqData
-      );
+      const data: any = await httpReq.post(`/api/${endPoint}`, reqData);
 
       // server success
       if (data?.success) {
@@ -48,6 +45,7 @@ export const useReqSender = () => {
       alert(err.message);
     }
   };
+
   // post req sender
   const sendReq = async (reqConfig: {
     reqData: { user_email: string; user_password: string } | IProduct;
