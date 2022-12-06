@@ -1,4 +1,5 @@
-import httpReq from "./axiosInstance";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export const handleDelete = async (
   products: IProduct[],
@@ -7,10 +8,17 @@ export const handleDelete = async (
   end_point: string
 ): Promise<void> => {
   const cnfDel: boolean = window.confirm("Are you sure ?");
+  // take user info
+  const userCookie: string | undefined = Cookies.get("user_information");
+  const user = userCookie && JSON.parse(userCookie);
 
   if (cnfDel) {
     try {
-      const data: any = await httpReq.delete(`/api/${end_point}`);
+      const data: any = await axios.delete(`/api/${end_point}`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
       if (data.success) {
         const rest = products.filter((p: IProduct) => id !== p._id);
         setProducts(rest);
