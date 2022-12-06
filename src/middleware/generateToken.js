@@ -8,7 +8,7 @@ export const generateToken = (user) => {
 
     process.env.NEXT_PUBLIC_ANALYTICS_JWT_ACCESS_SECRET,
     {
-      expiresIn: "15s", // 900s for 15 min
+      expiresIn: "15m", // 900s for 15 min
     }
   );
   return token;
@@ -32,13 +32,13 @@ export const isAuthentic = async (req, res, next) => {
     const token = authorization.slice(7, authorization.length);
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
-        res.status(401).send({ message: "Token is not valid" });
+        res.json({ message: "Token is not valid" });
       } else {
         req.user = decode;
         next();
       }
     });
   } else {
-    res.status(401).send({ message: "Token is not suppiled!" });
+    res.json({ message: "Token is not suppiled!" });
   }
 };

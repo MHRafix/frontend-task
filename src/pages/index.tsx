@@ -42,14 +42,14 @@ const Home: NextPage = () => {
   });
 
   // send req
-  const { sendReq } = useReqSender();
+  const { authReq } = useReqSender();
 
   // on submit function here
   const onSubmit = async (values: IUser, { resetForm }: { resetForm: any }) => {
     setProcessing((state: boolean) => !state);
 
     if (values) {
-      sendReq({
+      authReq({
         reqData: values,
         resetForm,
         setProcessing,

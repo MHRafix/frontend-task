@@ -1,10 +1,11 @@
+import axios from "axios";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import httpReq from "./axiosInstance";
 
 export const useReqSender = () => {
   // post req sender
-  const sendReq = async (reqConfig: {
+  const authReq = async (reqConfig: {
     reqData: { user_email: string; user_password: string } | IProduct;
     resetForm: any;
     setProcessing: (value: boolean) => void;
@@ -19,18 +20,54 @@ export const useReqSender = () => {
         setProcessing(false);
         resetForm({ values: "" });
 
-        if (endPoint === "authentication/auth") {
-          Cookies.set("user_information", JSON.stringify(data), {
-            expires: 900000, // 15 min
-            secure: true,
-            sameSite: "strict",
-            path: "/",
-          });
-          setTimeout(() => {
-            Router.push("/allProducts");
-          }, 1000);
-        }
+        Cookies.set("user_information", JSON.stringify(data), {
+          expires: 900000, // 15 min
+          secure: true,
+          sameSite: "strict",
+          path: "/",
+        });
+        setTimeout(() => {
+          Router.push("/allProducts");
+        }, 1000);
 
+        alert(data.success);
+        // server error
+      } else if (data.error) {
+        setProcessing(false);
+        resetForm({ values: "" });
+        alert(data.error);
+      }
+
+      // try catch error
+    } catch (err: any) {
+      setProcessing(false);
+      resetForm({ values: "" });
+      alert(err.message);
+    }
+  };
+  // post req sender
+  const sendReq = async (reqConfig: {
+    reqData: { user_email: string; user_password: string } | IProduct;
+    resetForm: any;
+    setProcessing: (value: boolean) => void;
+    endPoint: string;
+  }) => {
+    const { reqData, resetForm, setProcessing, endPoint } = reqConfig;
+    // take user info
+    const userCookie: string | undefined = Cookies.get("user_information");
+    const user = userCookie && JSON.parse(userCookie);
+
+    try {
+      const data: any = await axios.post(`/api/${endPoint}`, reqData, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+
+      // server success
+      if (data?.success) {
+        setProcessing(false);
+        resetForm({ values: "" });
         alert(data.success);
         // server error
       } else if (data.error) {
@@ -55,8 +92,16 @@ export const useReqSender = () => {
     endPoint: string;
   }) => {
     const { reqData, resetForm, setProcessing, endPoint } = reqConfig;
+    // take user info
+    const userCookie: string | undefined = Cookies.get("user_information");
+    const user = userCookie && JSON.parse(userCookie);
+
     try {
-      const data: any = await httpReq.update(`/api/${endPoint}`, reqData);
+      const data: any = await axios.patch(`/api/${endPoint}`, reqData, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
 
       // server success
       if (data?.success) {
@@ -79,5 +124,5 @@ export const useReqSender = () => {
     }
   };
 
-  return { sendReq, patchReq };
+  return { sendReq, patchReq, authReq };
 };
