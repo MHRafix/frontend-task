@@ -34,7 +34,7 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
   }, [user?.user_email]);
 
   const [processing, setProcessing] = useState<boolean>(false);
-  const [thumbnail, setThumbnail] = useState<string>("");
+  const [thumbnail, setThumbnail] = useState<any>(singleProduct?.thumbnail);
   const router = useRouter();
 
   // initial vlaue of form
@@ -166,9 +166,9 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
               accept="image/*"
               onChange={(e: any) => setThumbnail(e.target.files[0])}
             />
-            {singleProduct.thumbnail && (
+            {singleProduct?.thumbnail && (
               <Image
-                src={singleProduct.thumbnail || thumbnail}
+                src={thumbnail}
                 alt="thumbnail"
                 width={40}
                 height={40}

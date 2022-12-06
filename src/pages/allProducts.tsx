@@ -101,7 +101,7 @@ const AllProducts: NextPage<{
         </Box>
 
         {allProducts?.length && (
-          <TableData products={allProducts} setProducts={setCurrentItems} />
+          <TableData products={currentItems} setProducts={setCurrentItems} />
         )}
         {allProducts?.length > itemsPerPage && (
           <div className="pagination">
