@@ -1,24 +1,28 @@
 import Box from "@mui/material/Box";
 import Cookies from "js-cookie";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import TableData from "../components/custom/Table/TableData";
 import db from "../hooks/db.js";
-import Product from "../model/Product";
+import { fetcher } from "../hooks/fetcher";
 
 const AllProducts: NextPage<{
   allProducts: IProduct[] | any[];
 }> = ({ allProducts }) => {
-  const [currentItems, setCurrentItems] = useState<IProduct[]>(allProducts);
+  const [currentItems, setCurrentItems] = useState<IProduct[] | []>(
+    allProducts || []
+  );
   const [pageCount, setPageCount] = useState<number>(0);
   const [itemOffset, setItemOffset] = useState<number>(0);
 
   useEffect(() => {
     const endOffset = itemOffset + 3;
-    setCurrentItems(allProducts?.slice(itemOffset, endOffset));
+    setCurrentItems(
+      allProducts.length ? allProducts?.slice(itemOffset, endOffset) : []
+    );
     setPageCount(Math.ceil(allProducts?.length / 3));
   }, [itemOffset, allProducts?.length, 3]);
 
@@ -100,7 +104,7 @@ const AllProducts: NextPage<{
           </Box>
         </Box>
 
-        {allProducts?.length && (
+        {currentItems?.length > 0 && (
           <TableData products={currentItems} setProducts={setCurrentItems} />
         )}
         {allProducts?.length > itemsPerPage && (
@@ -123,17 +127,17 @@ const AllProducts: NextPage<{
 
 export default AllProducts;
 
-export async function getServerSideProps({
-  params,
-}: {
-  params: { page: number };
-}) {
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
   await db.connect();
 
   // all products
-  const allProducts: IProduct[] | any[] = await Product.find({});
+  // const allProducts: IProduct[] | any[] = await Product.find({});
+  const allProducts: IProduct[] | any[] = await fetcher(
+    "product/allProducts",
+    context.req.cookies
+  );
 
   await db.disconnect();
 
   return { props: { allProducts } };
-}
+};

@@ -21,7 +21,7 @@ handler.get(
     await db.disconnect();
 
     // conditionaly send response
-    if (allProducts) {
+    if (allProducts?.length) {
       res.status(200).json(allProducts);
     } else {
       res.json({ error: "Opps, something wrong!" });

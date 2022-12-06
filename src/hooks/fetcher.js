@@ -1,9 +1,16 @@
-export const fetcher = async (end_point) => {
+export const fetcher = async (endPoint, userData) => {
+  const user = userData.user_information;
+  const info = JSON.parse(user);
   const res = await fetch(
-    `http://localhost:3000/api/${end_point}`
-    // `https://frontend-task-psi.vercel.app/api/${end_point}`
+    `https://frontend-task-psi.vercel.app/api/${endPoint}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+        Authorization: `Bearer ${info.accessToken}`,
+      },
+    }
   );
   const data = await res.json();
-
   return data;
 };
