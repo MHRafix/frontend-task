@@ -30,14 +30,19 @@ export const isAuthentic = async (req, res, next) => {
   const bearer = req?.headers?.authorization?.startsWith("Bearer");
   if (authorization && bearer) {
     const token = authorization.slice(7, authorization.length);
-    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
-      if (err) {
-        res.json({ message: "Token is not valid" });
-      } else {
-        req.user = decode;
-        next();
+    console.log(token);
+    jwt.verify(
+      token,
+      process.env.NEXT_PUBLIC_ANALYTICS_JWT_ACCESS_SECRET,
+      (err, decode) => {
+        if (err) {
+          res.json({ message: err });
+        } else {
+          req.user = decode;
+          next();
+        }
       }
-    });
+    );
   } else {
     res.json({ message: "Token is not suppiled!" });
   }
