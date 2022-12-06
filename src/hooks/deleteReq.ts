@@ -22,7 +22,6 @@ export const handleDelete = async (
           },
         }
       );
-      console.log(data);
       if (data?.success) {
         const rest = products.filter((p: IProduct) => id !== p._id);
         setProducts(rest);

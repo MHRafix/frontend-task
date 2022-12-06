@@ -3,18 +3,31 @@ import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Router from "next/router";
 import { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import LayoutContainer from "../components/common/Layout/LayoutContainer";
 import TableData from "../components/custom/Table/TableData";
-import { fetcher } from "../hooks/fetcher";
-import Product from "../model/Product";
 import db from "../hooks/db.js";
+import Product from "../model/Product";
 
 const AllProducts: NextPage<{
   allProducts: IProduct[] | any[];
 }> = ({ allProducts }) => {
-  // all products state
-  const [products, setProducts] = useState<IProduct[]>(allProducts);
+  const [currentItems, setCurrentItems] = useState<IProduct[]>(allProducts);
+  const [pageCount, setPageCount] = useState<number>(0);
+  const [itemOffset, setItemOffset] = useState<number>(0);
 
+  useEffect(() => {
+    const endOffset = itemOffset + 3;
+    setCurrentItems(allProducts?.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(allProducts?.length / 3));
+  }, [itemOffset, allProducts?.length, 3]);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event: any) => {
+    const newOffset = (event.selected * 3) % allProducts?.length;
+
+    setItemOffset(newOffset);
+  };
   // take user info
   const userCookie: string | undefined = Cookies.get("user_information");
   const user = userCookie && JSON.parse(userCookie);
@@ -26,6 +39,8 @@ const AllProducts: NextPage<{
       Router.push("/");
     }
   }, [user?.user_email]);
+
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
   return (
     <LayoutContainer title="All products">
@@ -86,9 +101,21 @@ const AllProducts: NextPage<{
         </Box>
 
         {allProducts?.length && (
-          <TableData products={products} setProducts={setProducts} />
+          <TableData products={currentItems} setProducts={setCurrentItems} />
         )}
-        {allProducts?.length > 5 && <Box>Pagination</Box>}
+        {allProducts?.length > itemsPerPage && (
+          <div className="pagination">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+              previousLabel="<"
+              // renderOnZeroPageCount={null}
+            />
+          </div>
+        )}
       </Box>
     </LayoutContainer>
   );
@@ -104,7 +131,7 @@ export async function getServerSideProps({
   await db.connect();
   // all products
   const allProducts: IProduct[] | any[] = await Product.find({});
-  // // const allProducts: IProduct[] = await fetcher('product/allProducts');
+  // const allProducts: IProduct[] = await fetcher('product/allProducts');
 
   await db.disconnect();
 
