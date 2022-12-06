@@ -23,4 +23,13 @@ li.selected {
   color: white;
   padding: 6px 15px;
   border-radius: 100px;
+  cursor: pointer;
+}
+
+li {
+  background: rgb(59, 58, 58);
+  color: white;
+  padding: 6px 15px;
+  border-radius: 100px;
+  cursor: pointer;
 }
