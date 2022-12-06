@@ -13,7 +13,10 @@ export const useReqSender = () => {
   }) => {
     const { reqData, resetForm, setProcessing, endPoint } = reqConfig;
     try {
-      const data: any = await httpReq.post(`/api/${endPoint}`, reqData);
+      const { data }: { data: { success: string } } = await httpReq.post(
+        `/api/${endPoint}`,
+        reqData
+      );
 
       // server success
       if (data?.success) {
@@ -32,10 +35,10 @@ export const useReqSender = () => {
 
         alert(data.success);
         // server error
-      } else if (data.error) {
+      } else {
         setProcessing(false);
         resetForm({ values: "" });
-        alert(data.error);
+        alert("Faild to login!");
       }
 
       // try catch error
@@ -58,11 +61,15 @@ export const useReqSender = () => {
     const user = userCookie && JSON.parse(userCookie);
 
     try {
-      const data: any = await axios.post(`/api/${endPoint}`, reqData, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
+      const { data }: { data: { success: string } } = await axios.post(
+        `/api/${endPoint}`,
+        reqData,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
 
       // server success
       if (data?.success) {
@@ -70,10 +77,10 @@ export const useReqSender = () => {
         resetForm({ values: "" });
         alert(data.success);
         // server error
-      } else if (data.error) {
+      } else {
         setProcessing(false);
         resetForm({ values: "" });
-        alert(data.error);
+        alert("Faild to operation.");
       }
 
       // try catch error
@@ -97,13 +104,16 @@ export const useReqSender = () => {
     const user = userCookie && JSON.parse(userCookie);
 
     try {
-      const data: any = await axios.patch(`/api/${endPoint}`, reqData, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
+      const { data }: { data: { success: string } } = await axios.patch(
+        `/api/${endPoint}`,
+        reqData,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
 
-      console.log(data);
       // server success
       if (data?.success) {
         setProcessing(false);
@@ -111,10 +121,10 @@ export const useReqSender = () => {
         Router.push("/allProducts");
 
         // server error
-      } else if (data.error) {
+      } else {
         setProcessing(false);
         resetForm({ values: "" });
-        alert(data.error);
+        alert("Faild to edit!");
       }
 
       // try catch error

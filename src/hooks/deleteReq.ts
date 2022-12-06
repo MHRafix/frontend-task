@@ -14,12 +14,14 @@ export const handleDelete = async (
 
   if (cnfDel) {
     try {
-      const data: any = await axios.delete(`/api/${end_point}`, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      console.log(data);
+      const { data }: { data: { success: string } } = await axios.delete(
+        `/api/${end_point}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
       if (data?.success) {
         const rest = products.filter((p: IProduct) => id !== p._id);
         setProducts(rest);
