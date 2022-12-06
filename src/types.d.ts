@@ -18,7 +18,8 @@ interface Column {
 interface Data {
   user_email: string;
   success: string;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 type IUser = {

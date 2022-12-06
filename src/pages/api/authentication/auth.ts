@@ -1,7 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
-import { generateToken } from "../../../middleware/generateToken";
+import {
+  generateRefToken,
+  generateToken,
+} from "../../../middleware/generateToken";
 
 const handler = nc();
 
@@ -22,9 +25,12 @@ handler.post(
       userInfo.user_password === user_password
     ) {
       // generate jwt token here
-      const token: string = generateToken(user_email);
+      const accessToken: string = generateToken(user_email);
+      const refreshToken: string = generateRefToken(user_email);
+
       res.status(200).json({
-        token,
+        accessToken,
+        refreshToken,
         user_email: userInfo.user_email,
         success: "Login successful!",
       });

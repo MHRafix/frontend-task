@@ -3,14 +3,24 @@ import jwt from "jsonwebtoken";
 export const generateToken = (user) => {
   const token = jwt.sign(
     {
-      _id: "ajudajfhjsafhui9043w5353i50jnf",
       user_email: user,
     },
 
-    process.env.NEXT_PUBLIC_ANALYTICS_JWT_SECRET,
+    process.env.NEXT_PUBLIC_ANALYTICS_JWT_ACCESS_SECRET,
     {
-      expiresIn: "900s", // 900s for 15 min
+      expiresIn: "15s", // 900s for 15 min
     }
+  );
+  return token;
+};
+
+export const generateRefToken = (user) => {
+  const token = jwt.sign(
+    {
+      user_email: user,
+    },
+
+    process.env.NEXT_PUBLIC_ANALYTICS_JWT_REFRESH_SECRET
   );
   return token;
 };

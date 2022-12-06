@@ -2,11 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
 import db from "../../../hooks/db";
+import { isAuthentic } from "../../../middleware/generateToken";
 import Product from "../../../model/Product";
 
 const handler = nc();
 
 handler.post(
+  isAuthentic,
   async (
     req: NextApiRequest,
     res: NextApiResponse<{ success: string } | { error: string }>
