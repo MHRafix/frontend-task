@@ -33,3 +33,12 @@ li {
   border-radius: 100px;
   cursor: pointer;
 }
+
+ul.MuiList-root.MuiList-padding.css-1ontqvh {
+  display: block;
+}
+
+li.MuiListItem-root.MuiListItem-gutters.css-qkz7df {
+  background: transparent;
+  padding: 0;
+}

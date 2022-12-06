@@ -79,6 +79,15 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
         setProcessing,
         endPoint: `product/update/${router.query._id}`,
       });
+    } else if (thumbnail === "") {
+      values.thumbnail = singleProduct.thumbnail;
+
+      patchReq({
+        reqData: values,
+        resetForm,
+        setProcessing,
+        endPoint: `product/update/${router.query._id}`,
+      });
     }
   };
 
@@ -156,11 +165,10 @@ const EditProduct: NextPage<{ singleProduct: IProduct }> = ({
               id="file"
               accept="image/*"
               onChange={(e: any) => setThumbnail(e.target.files[0])}
-              required
             />
             {singleProduct.thumbnail && (
               <Image
-                src={singleProduct.thumbnail}
+                src={singleProduct.thumbnail || thumbnail}
                 alt="thumbnail"
                 width={40}
                 height={40}
